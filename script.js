@@ -59,4 +59,49 @@
       }, {passive:true});
     });
   }
+  // animated counters (0 → target on scroll into view)
+  const calm2 = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const counters = document.querySelectorAll('[data-count]');
+  function finalCount(el){
+    el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix') || '');
+  }
+  if(calm2){ counters.forEach(finalCount); }
+  else {
+    const cio = new IntersectionObserver(es=>{
+      es.forEach(e=>{
+        if(!e.isIntersecting) return;
+        const el = e.target; cio.unobserve(el);
+        const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+        const suf = el.getAttribute('data-suffix') || '';
+        const dur = 1600, t0 = performance.now();
+        (function tick(t){
+          const p = Math.min((t - t0) / dur, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * ease) + suf;
+          if(p < 1) requestAnimationFrame(tick);
+        })(t0);
+      });
+    }, {threshold:.4});
+    counters.forEach(el=>cio.observe(el));
+  }
+
+  // hero morph: giant intro → full layout after a couple of scrolls
+  const hero = document.getElementById('hero');
+  function onScrollHero(){ hero.classList.toggle('scrolled', window.scrollY > 140); }
+  window.addEventListener('scroll', onScrollHero, {passive:true});
+  onScrollHero();
+
+  // skill bars grow on view
+  const barFills = document.querySelectorAll('.bar i[data-w]');
+  if(calm2){ barFills.forEach(el=>{ el.style.width = el.getAttribute('data-w') + '%'; }); }
+  else {
+    const bio = new IntersectionObserver(es=>{
+      es.forEach(e=>{
+        if(!e.isIntersecting) return;
+        e.target.style.width = e.target.getAttribute('data-w') + '%';
+        bio.unobserve(e.target);
+      });
+    }, {threshold:.4});
+    barFills.forEach(el=>bio.observe(el));
+  }
 })();
