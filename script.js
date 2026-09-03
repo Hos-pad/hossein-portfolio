@@ -85,11 +85,27 @@
     counters.forEach(el=>cio.observe(el));
   }
 
-  // hero morph: giant intro → full layout after a couple of scrolls
+  // hero stages: pure intro first, then latched full layout + nav (never goes back)
   const hero = document.getElementById('hero');
-  function onScrollHero(){ hero.classList.toggle('scrolled', window.scrollY > 140); }
+  let heroSeen = false;
+  function onScrollHero(){
+    if(heroSeen) return;
+    const track = hero.offsetHeight - window.innerHeight;
+    const p = track > 0 ? window.scrollY / track : 1;
+    if(p >= 0.15 || window.scrollY > window.innerHeight * 0.4){
+      heroSeen = true;
+      hero.classList.add('scrolled');
+      document.body.classList.add('seen');
+    }
+  }
   window.addEventListener('scroll', onScrollHero, {passive:true});
   onScrollHero();
+  const cue = document.getElementById('scrollCue');
+  if(cue){ cue.addEventListener('click', e=>{
+    if(heroSeen) return;
+    e.preventDefault();
+    window.scrollTo({top:window.innerHeight * 0.55, behavior: calm ? 'auto' : 'smooth'});
+  }); }
 
   // skill bars grow on view
   const barFills = document.querySelectorAll('.bar i[data-w]');
