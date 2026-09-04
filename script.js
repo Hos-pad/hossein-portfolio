@@ -15,6 +15,9 @@
       if(v != null) el.textContent = v;
     });
     localStorage.setItem('hp-lang', l);
+    document.title = l === 'fa'
+      ? 'حسین پاداش | تدوینگر ارشد و سوپروایزر پست‌پروداکشن — نمونه‌کار'
+      : 'Hossein Padash | Lead Video Editor & Post-Production Supervisor — Portfolio';
   }
   btn.addEventListener('click', ()=> apply(lang === 'en' ? 'fa' : 'en'));
   apply(lang);
@@ -109,7 +112,9 @@
 
   // skill bars grow on view
   const barFills = document.querySelectorAll('.bar i[data-w]');
-  if(calm2){ barFills.forEach(el=>{ el.style.width = el.getAttribute('data-w') + '%'; }); }
+  // reset to 0 first (without transition) so the grow animation still plays despite inline fallback widths
+  barFills.forEach(el=>{ el.style.transition = 'none'; el.style.width = '0%'; void el.offsetWidth; el.style.transition = ''; });
+  if(calm2){ barFills.forEach(el=>{ el.style.transition = 'none'; el.style.width = el.getAttribute('data-w') + '%'; }); }
   else {
     const bio = new IntersectionObserver(es=>{
       es.forEach(e=>{
