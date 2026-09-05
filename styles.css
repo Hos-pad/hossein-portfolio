@@ -59,7 +59,7 @@ html[data-lang="fa"] .scroll-cue{letter-spacing:0}
 a.scroll-cue{animation:rise .9s .3s ease both}
 @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 .scroll-cue:hover{color:var(--gold)}
-.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .hero-glow{position:absolute;width:700px;height:700px;left:50%;top:-260px;transform:translateX(-50%);background:radial-gradient(circle,rgba(232,179,75,.22),transparent 65%);filter:blur(10px)}
 /* hero decorations removed for a cleaner first screen */
 .kicker{color:var(--gold);letter-spacing:.14em;text-transform:uppercase;font-size:12px;font-weight:700;margin:0 0 18px}
@@ -182,7 +182,7 @@ html[data-lang="en"] .job-more{font-style:italic}
 
 /* RTL */
 html[data-lang="fa"]{direction:rtl}
-html[data-lang="fa"] .nav-links, html[data-lang="fa"] .hero-meta, html[data-lang="fa"] .hero-cta{flex-direction:row}
+html[data-lang="fa"] .hero-meta, html[data-lang="fa"] .hero-cta{flex-direction:row}
 html[data-lang="fa"] body{text-align:right}
 
 /* responsive */
